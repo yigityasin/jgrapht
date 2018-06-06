@@ -19,7 +19,6 @@ org.jgrapht.alg.vertexcover
 org.jgrapht.alg.vertexcover.util
 org.jgrapht.demo
 org.jgrapht.event
-org.jgrapht.experimental
 org.jgrapht.ext
 org.jgrapht.generate
 org.jgrapht.graph
