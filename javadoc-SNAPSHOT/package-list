@@ -4,6 +4,7 @@ org.jgrapht.alg.clique
 org.jgrapht.alg.color
 org.jgrapht.alg.connectivity
 org.jgrapht.alg.cycle
+org.jgrapht.alg.decomposition
 org.jgrapht.alg.flow
 org.jgrapht.alg.independentset
 org.jgrapht.alg.interfaces
