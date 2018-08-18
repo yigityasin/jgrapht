@@ -9,6 +9,7 @@ org.jgrapht.alg.flow
 org.jgrapht.alg.independentset
 org.jgrapht.alg.interfaces
 org.jgrapht.alg.isomorphism
+org.jgrapht.alg.lca
 org.jgrapht.alg.matching
 org.jgrapht.alg.scoring
 org.jgrapht.alg.shortestpath
