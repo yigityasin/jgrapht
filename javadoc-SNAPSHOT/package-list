@@ -29,5 +29,6 @@ org.jgrapht.graph.concurrent
 org.jgrapht.graph.guava
 org.jgrapht.graph.specifics
 org.jgrapht.io
+org.jgrapht.opt.graph
 org.jgrapht.traverse
 org.jgrapht.util
