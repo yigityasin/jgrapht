@@ -600,7 +600,6 @@ import java.awt.*;
  * A demo applet that shows how to use JGraphX to visualize JGraphT graphs. Applet based on
  * JGraphAdapterDemo.
  *
- * @since July 9, 2013
  */
 public class JGraphXAdapterDemo
     extends
