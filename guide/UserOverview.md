@@ -23,6 +23,10 @@ supported, as we'll explain further on; but for now, let's take a look
 at a simple example of creating a directed graph:
 
 ```java
+import org.jgrapht.*;
+import org.jgrapht.graph.*;
+import java.net.*;
+
         Graph<URL, DefaultEdge> g = new DefaultDirectedGraph<>(DefaultEdge.class);
 
         URL google = new URL("http://www.google.com");
@@ -39,6 +43,7 @@ at a simple example of creating a directed graph:
         g.addEdge(google, jgrapht);
         g.addEdge(google, wikipedia);
         g.addEdge(wikipedia, google);
+
 ```
 
 Notice how the vertex objects are instances of the
@@ -241,6 +246,15 @@ the
 package.  Here's an example of generating a [complete graph](http://mathworld.wolfram.com/CompleteGraph.html):
 
 ```java
+import org.jgrapht.*;
+import org.jgrapht.generate.*;
+import org.jgrapht.graph.*;
+import org.jgrapht.traverse.*;
+import org.jgrapht.util.SupplierUtil;
+
+import java.util.*;
+import java.util.function.Supplier;
+
 public final class CompleteGraphDemo
 {
     // number of vertices
@@ -355,6 +369,15 @@ optimal algorithm implementation for a given graph instance.
 Here's an example of running [strongly connected components](http://mathworld.wolfram.com/StronglyConnectedComponent.html) and shortest path algorithms on a directed graph:
 
 ```java
+import org.jgrapht.*;
+import org.jgrapht.alg.connectivity.*;
+import org.jgrapht.alg.interfaces.ShortestPathAlgorithm.*;
+import org.jgrapht.alg.interfaces.*;
+import org.jgrapht.alg.shortestpath.*;
+import org.jgrapht.graph.*;
+
+import java.util.*;
+
         // constructs a directed graph with the specified vertices and edges
         Graph<String, DefaultEdge> directedGraph =
             new DefaultDirectedGraph<String, DefaultEdge>(DefaultEdge.class);
@@ -444,6 +467,8 @@ These can also be used for data interchange with other applications.
 Continuing our HelloJGraphT example, here's how to export a graph in [GraphViz .dot](https://www.graphviz.org/) format:
 
 ```java
+import org.jgrapht.io.*;
+
         // use helper classes to define how vertices should be rendered,
         // adhering to the DOT language restrictions
         ComponentNameProvider<URL> vertexIdProvider =
