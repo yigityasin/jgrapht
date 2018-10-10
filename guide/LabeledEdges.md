@@ -103,15 +103,3 @@ Once the graph has been populated, label information can be accessed during trav
 ```
 
 Given two vertices, an application can check the label on the edge between them by using [getEdge(V,V)](http://jgrapht.org/javadoc/org/jgrapht/Graph.html#getEdge-V-V-):
-
-```java
-    private static boolean isEnemyOf(
-        Graph<String, RelationshipEdge> graph,
-        String person1,
-        String person2)
-    {
-        return graph.getEdge(person1, person2).getLabel().equals(ENEMY);
-    }
-```
-
-You can find the complete source code for this example at [LabeledEdge.java](https://github.com/jgrapht/jgrapht/blob/master/jgrapht-demo/src/main/java/org/jgrapht/demo/LabeledEdges.java)
