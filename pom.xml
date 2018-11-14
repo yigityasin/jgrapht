@@ -8,6 +8,7 @@
 	<version>1.3.1-SNAPSHOT</version>
 	<description>A Java class library for graph-theory data structures and algorithms.</description>
 	<url>http://www.jgrapht.org</url>
+	<logo>https://raw.githubusercontent.com/jgrapht/jgrapht/master/etc/logo/jgrapht-logo-transparent.png</logo>
 	<parent>
 		<groupId>org.sonatype.oss</groupId>
 		<artifactId>oss-parent</artifactId>
@@ -44,6 +45,24 @@
 			<archive>http://lists.sourceforge.net/lists/listinfo/jgrapht-announce</archive>
 		</mailingList>
 	</mailingLists>
+	
+	<developers>
+		<developer>
+	  	  <id>jsichi</id>
+	  	  <name>John V. Sichi</name>
+	  	  <email>jsichi@gmail.com</email>
+		</developer>
+		<developer>
+		  <id>jkinable</id>
+		  <name>Joris Kinable</name>
+		  <email>j.kinable@gmail.com</email>
+		</developer>
+		<developer>
+		  <id>d-michail</id>
+		  <name>Dimitrios Michail</name>
+		  <email>dimitrios.michail@gmail.com</email>
+		</developer>
+	</developers>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
