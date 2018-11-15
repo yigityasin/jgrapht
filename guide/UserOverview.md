@@ -33,6 +33,24 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
+
+        Graph<URL, DefaultEdge> g = new DefaultDirectedGraph<>(DefaultEdge.class);
+
+        URL google = new URL("http://www.google.com");
+        URL wikipedia = new URL("http://www.wikipedia.org");
+        URL jgrapht = new URL("http://www.jgrapht.org");
+
+        // add the vertices
+        g.addVertex(google);
+        g.addVertex(wikipedia);
+        g.addVertex(jgrapht);
+
+        // add edges to create linking structure
+        g.addEdge(jgrapht, wikipedia);
+        g.addEdge(google, jgrapht);
+        g.addEdge(google, wikipedia);
+        g.addEdge(wikipedia, google);
+
 ```
 
 Notice how the vertex objects are instances of the
@@ -62,7 +80,9 @@ Once a graph has been created, an application can access its vertices
 and edges directly via live set views:
 
 ```java
-
+        URL start = hrefGraph
+            .vertexSet().stream().filter(url -> url.getHost().equals("www.jgrapht.org")).findAny()
+            .get();
 ```
 
 Here we iterate over all vertices of the graph via the [vertexSet](https://jgrapht.org/javadoc/org/jgrapht/Graph.html#vertexSet--) method, filtering for only those
@@ -141,7 +161,12 @@ accessor).
 You can also use [GraphTypeBuilder](https://jgrapht.org/javadoc/org/jgrapht/graph/builder/GraphTypeBuilder.html) to instantiate a new graph without directly constructing a concrete class:
 
 ```java
-
+    private static Graph<Integer, DefaultEdge> buildEmptySimpleGraph()
+    {
+        return GraphTypeBuilder
+            .<Integer, DefaultEdge> undirected().allowingMultipleEdges(false)
+            .allowingSelfLoops(false).edgeClass(DefaultEdge.class).weighted(false).buildGraph();
+    }
 ```
 
 `GraphTypeBuilder` uses the property values you supply in order to
@@ -178,7 +203,11 @@ Here's an example using `GraphBuilder` to construct a
 [kite graph](http://mathworld.wolfram.com/KiteGraph.html):
 
 ```java
-
+    private static Graph<Integer, DefaultEdge> buildKiteGraph()
+    {
+        return new GraphBuilder<>(buildEmptySimpleGraph())
+            .addEdgeChain(1, 2, 3, 4, 1).addEdge(2, 4).addEdge(3, 5).buildAsUnmodifiable();
+    }
 ```
 
 The integer vertex objects are added to the graph implicitly as the
@@ -233,6 +262,52 @@ import org.jgrapht.util.*;
 import java.util.*;
 import java.util.function.*;
 
+public final class CompleteGraphDemo
+{
+    // number of vertices
+    private static final int SIZE = 10;
+
+    /**
+     * Main demo entry point.
+     * 
+     * @param args command line arguments
+     */
+    public static void main(String[] args)
+    {
+        // Create the VertexFactory so the generator can create vertices
+        Supplier<String> vSupplier = new Supplier<String>()
+        {
+            private int id = 0;
+
+            @Override
+            public String get()
+            {
+                return "v" + id++;
+            }
+        };
+
+        // Create the graph object
+        Graph<String, DefaultEdge> completeGraph =
+            new SimpleGraph<>(vSupplier, SupplierUtil.createDefaultEdgeSupplier(), false);
+
+        // Create the CompleteGraphGenerator object
+        CompleteGraphGenerator<String, DefaultEdge> completeGenerator =
+            new CompleteGraphGenerator<>(SIZE);
+
+        // Use the CompleteGraphGenerator object to make completeGraph a
+        // complete graph with [size] number of vertices
+        completeGenerator.generateGraph(completeGraph);
+
+        // Print out the graph to be sure it's really complete
+        Iterator<String> iter = new DepthFirstIterator<>(completeGraph);
+        while (iter.hasNext()) {
+            String vertex = iter.next();
+            System.out.println(
+                "Vertex " + vertex + " is connected to: "
+                    + completeGraph.edgesOf(vertex).toString());
+        }
+    }
+}
 ```
 
 The `SIZE` parameter controls the number of vertices added to the
@@ -258,6 +333,19 @@ Here's an example using depth-first ordering on our HelloJGraphT example:
 
 ```java
 
+        // create a graph based on URL objects
+        Graph<URL, DefaultEdge> hrefGraph = createHrefGraph();
+
+        // find the vertex corresponding to www.jgrapht.org
+        URL start = hrefGraph
+            .vertexSet().stream().filter(url -> url.getHost().equals("www.jgrapht.org")).findAny()
+            .get();
+
+        Iterator<URL> iterator = new DepthFirstIterator<>(hrefGraph, start);
+        while (iterator.hasNext()) {
+            URL url = iterator.next();
+            System.out.println(url);
+        }
 ```
 
 with expected output
@@ -298,6 +386,56 @@ import org.jgrapht.graph.*;
 
 import java.util.*;
 
+        // constructs a directed graph with the specified vertices and edges
+        Graph<String, DefaultEdge> directedGraph =
+            new DefaultDirectedGraph<String, DefaultEdge>(DefaultEdge.class);
+        directedGraph.addVertex("a");
+        directedGraph.addVertex("b");
+        directedGraph.addVertex("c");
+        directedGraph.addVertex("d");
+        directedGraph.addVertex("e");
+        directedGraph.addVertex("f");
+        directedGraph.addVertex("g");
+        directedGraph.addVertex("h");
+        directedGraph.addVertex("i");
+        directedGraph.addEdge("a", "b");
+        directedGraph.addEdge("b", "d");
+        directedGraph.addEdge("d", "c");
+        directedGraph.addEdge("c", "a");
+        directedGraph.addEdge("e", "d");
+        directedGraph.addEdge("e", "f");
+        directedGraph.addEdge("f", "g");
+        directedGraph.addEdge("g", "e");
+        directedGraph.addEdge("h", "e");
+        directedGraph.addEdge("i", "h");
+
+        // computes all the strongly connected components of the directed graph
+        StrongConnectivityAlgorithm<String, DefaultEdge> scAlg =
+            new KosarajuStrongConnectivityInspector<>(directedGraph);
+        List<Graph<String, DefaultEdge>> stronglyConnectedSubgraphs =
+            scAlg.getStronglyConnectedComponents();
+
+        // prints the strongly connected components
+        System.out.println("Strongly connected components:");
+        for (int i = 0; i < stronglyConnectedSubgraphs.size(); i++) {
+            System.out.println(stronglyConnectedSubgraphs.get(i));
+        }
+        System.out.println();
+
+        // Prints the shortest path from vertex i to vertex c. This certainly
+        // exists for our particular directed graph.
+        System.out.println("Shortest path from i to c:");
+        DijkstraShortestPath<String, DefaultEdge> dijkstraAlg =
+            new DijkstraShortestPath<>(directedGraph);
+        SingleSourcePaths<String, DefaultEdge> iPaths = dijkstraAlg.getPaths("i");
+        System.out.println(iPaths.getPath("c") + "\n");
+
+        // Prints the shortest path from vertex c to vertex i. This path does
+        // NOT exist for our particular directed graph. Hence the path is
+        // empty and the result must be null.
+        System.out.println("Shortest path from c to i:");
+        SingleSourcePaths<String, DefaultEdge> cPaths = dijkstraAlg.getPaths("c");
+        System.out.println(cPaths.getPath("i"));
 ```
 
 with expected output
@@ -338,6 +476,27 @@ Continuing our HelloJGraphT example, here's how to export a graph in [GraphViz .
 
 ```java
 
+        // use helper classes to define how vertices should be rendered,
+        // adhering to the DOT language restrictions
+        ComponentNameProvider<URL> vertexIdProvider = new ComponentNameProvider<URL>()
+        {
+            public String getName(URL url)
+            {
+                return url.getHost().replace('.', '_');
+            }
+        };
+        ComponentNameProvider<URL> vertexLabelProvider = new ComponentNameProvider<URL>()
+        {
+            public String getName(URL url)
+            {
+                return url.toString();
+            }
+        };
+        GraphExporter<URL, DefaultEdge> exporter =
+            new DOTExporter<>(vertexIdProvider, vertexLabelProvider, null);
+        Writer writer = new StringWriter();
+        exporter.exportGraph(hrefGraph, writer);
+        System.out.println(writer.toString());
 ```
 
 with expected output
@@ -362,7 +521,7 @@ If you just want a quick dump of the structure of a small graph, you
 can also use the `toString` method; here's another example from the HelloJGraphT demo:
 
 ```java
-
+        System.out.println(stringGraph.toString());
 ```
 
 which produces
