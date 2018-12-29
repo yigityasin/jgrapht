@@ -34,11 +34,11 @@ import java.net.*;
 import java.util.*;
 
 
-        Graph<URL, DefaultEdge> g = new DefaultDirectedGraph<>(DefaultEdge.class);
+        Graph<URI, DefaultEdge> g = new DefaultDirectedGraph<>(DefaultEdge.class);
 
-        URL google = new URL("http://www.google.com");
-        URL wikipedia = new URL("http://www.wikipedia.org");
-        URL jgrapht = new URL("http://www.jgrapht.org");
+        URI google = new URI("http://www.google.com");
+        URI wikipedia = new URI("http://www.wikipedia.org");
+        URI jgrapht = new URI("http://www.jgrapht.org");
 
         // add the vertices
         g.addVertex(google);
@@ -54,7 +54,7 @@ import java.util.*;
 ```
 
 Notice how the vertex objects are instances of the
-[java.net.URL](https://docs.oracle.com/javase/8/docs/api/java/net/URL.html)
+[java.net.URI](https://docs.oracle.com/javase/8/docs/api/java/net/URI.html)
 class.  JGraphT does not supply a vertex class itself; instead, you're
 free to choose your own based on whatever works best for your
 application, subject to certain restrictions mentioned below.
@@ -80,8 +80,8 @@ Once a graph has been created, an application can access its vertices
 and edges directly via live set views:
 
 ```java
-        URL start = hrefGraph
-            .vertexSet().stream().filter(url -> url.getHost().equals("www.jgrapht.org")).findAny()
+        URI start = hrefGraph
+            .vertexSet().stream().filter(uri -> uri.getHost().equals("www.jgrapht.org")).findAny()
             .get();
 ```
 
@@ -333,18 +333,18 @@ Here's an example using depth-first ordering on our HelloJGraphT example:
 
 ```java
 
-        // create a graph based on URL objects
-        Graph<URL, DefaultEdge> hrefGraph = createHrefGraph();
+        // create a graph based on URI objects
+        Graph<URI, DefaultEdge> hrefGraph = createHrefGraph();
 
         // find the vertex corresponding to www.jgrapht.org
-        URL start = hrefGraph
-            .vertexSet().stream().filter(url -> url.getHost().equals("www.jgrapht.org")).findAny()
+        URI start = hrefGraph
+            .vertexSet().stream().filter(uri -> uri.getHost().equals("www.jgrapht.org")).findAny()
             .get();
 
-        Iterator<URL> iterator = new DepthFirstIterator<>(hrefGraph, start);
+        Iterator<URI> iterator = new DepthFirstIterator<>(hrefGraph, start);
         while (iterator.hasNext()) {
-            URL url = iterator.next();
-            System.out.println(url);
+            URI uri = iterator.next();
+            System.out.println(uri);
         }
 ```
 
@@ -478,21 +478,21 @@ Continuing our HelloJGraphT example, here's how to export a graph in [GraphViz .
 
         // use helper classes to define how vertices should be rendered,
         // adhering to the DOT language restrictions
-        ComponentNameProvider<URL> vertexIdProvider = new ComponentNameProvider<URL>()
+        ComponentNameProvider<URI> vertexIdProvider = new ComponentNameProvider<URI>()
         {
-            public String getName(URL url)
+            public String getName(URI uri)
             {
-                return url.getHost().replace('.', '_');
+                return uri.getHost().replace('.', '_');
             }
         };
-        ComponentNameProvider<URL> vertexLabelProvider = new ComponentNameProvider<URL>()
+        ComponentNameProvider<URI> vertexLabelProvider = new ComponentNameProvider<URI>()
         {
-            public String getName(URL url)
+            public String getName(URI uri)
             {
-                return url.toString();
+                return uri.toString();
             }
         };
-        GraphExporter<URL, DefaultEdge> exporter =
+        GraphExporter<URI, DefaultEdge> exporter =
             new DOTExporter<>(vertexIdProvider, vertexLabelProvider, null);
         Writer writer = new StringWriter();
         exporter.exportGraph(hrefGraph, writer);
