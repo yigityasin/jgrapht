@@ -126,7 +126,6 @@ subclasses of any of these).
 
 | Class Name                   | Edges    | Self-loops | Multiple edges | Weighted |
 |:----------------------------:|:--------:|:----------:|:--------------:|:--------:|
-|DefaultUndirectedWeightedGraph|undirected|yes         | no             |yes       |
 |SimpleGraph                   |undirected|no          | no             |no        |
 |Multigraph                    |undirected|no          | yes            |no        |
 |Pseudograph                   |undirected|yes         | yes            |no        |
@@ -134,6 +133,7 @@ subclasses of any of these).
 |SimpleWeightedGraph           |undirected|no          | no             |yes       |
 |WeightedMultigraph            |undirected|no          | yes            |yes       |
 |WeightedPseudograph           |undirected|yes         | yes            |yes       |
+|DefaultUndirectedWeightedGraph|undirected|yes         | no             |yes       |
 |SimpleDirectedGraph           |directed  |no          | no             |no        |
 |DirectedMultigraph            |directed  |no          | yes            |no        |
 |DirectedPseudograph           |directed  |yes         | yes            |no        |
